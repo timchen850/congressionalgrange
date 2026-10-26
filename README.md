@@ -3,8 +3,6 @@
 Grange AI helps small nonprofits and community groups find grants and write proposals,
 even if they don't have a grant writer.
 
-Live site: https://grangeai.net
-
 ## Features
 
 - **Profile** - a short survey about your organization
@@ -40,7 +38,10 @@ Then open http://localhost:3456
 
 ## Setup
 
-1. Make a Supabase project and run `supabase/schema.sql` in the SQL editor.
-2. Copy `config.example.js` to `config.js` and fill in your Supabase URL and key.
-3. Add these secrets to Supabase: `GEMINI_API_KEY`, `GROQ_API_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, and the four `PRICE_...` ids from Stripe.
-4. Deploy the functions with `supabase functions deploy`.
+1. Make a free project at supabase.com and run `supabase/schema.sql` in the SQL editor.
+2. Put your project URL and anon key in `config.js` (Project Settings > API).
+3. Add these secrets under Edge Functions > Secrets:
+   `GEMINI_API_KEY`, `GROQ_API_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`,
+   `PRICE_STARTER_MONTHLY`, `PRICE_STARTER_YEARLY`, `PRICE_PRO_MONTHLY`, `PRICE_PRO_YEARLY`
+4. Deploy the functions: `supabase functions deploy`
+5. In the repo settings, set Pages to deploy from GitHub Actions. Every push to main updates the site.
