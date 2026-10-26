@@ -1,4 +1,5 @@
-const db = window.supabase.createClient(window.SUPABASE_CONFIG.url, window.SUPABASE_CONFIG.anonKey);
+const cfg = window.SUPABASE_CONFIG;
+const db = cfg.url ? window.supabase.createClient(cfg.url, cfg.anonKey) : null;
 
 let user = null;
 let answers = {};
