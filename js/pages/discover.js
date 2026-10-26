@@ -66,7 +66,7 @@ function drawGrants() {
     return `
       <div class="grant">
         <span class="score ${color}">${g.score}% match</span>
-        <h3>${esc(g.title)}</h3>
+        <h3>${esc(g.title)}${g.status == 'forecasted' ? ' <span class="tag">Forecasted</span>' : ''}</h3>
         <p class="small">${esc(g.agency)} | Closes: ${g.close_date || 'Not listed'}</p>
         <p>Award: ${money(g.award_ceiling)}</p>
         <button class="btn-outline" onclick="saveGrant(${i})">Save</button>
