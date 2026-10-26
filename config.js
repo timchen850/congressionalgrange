@@ -1,5 +1,5 @@
-// Supabase settings for the website
+// put your own Supabase project url and anon key here
 window.SUPABASE_CONFIG = {
-  url: 'https://xewrvmqyzeiziimcmenj.supabase.co',
-  anonKey: 'sb_publishable_d-V-sZePB5xnz2MTuDIlQQ_6xSLJJW9',
+  url: '',
+  anonKey: '',
 };
