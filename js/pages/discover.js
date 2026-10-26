@@ -75,7 +75,7 @@ function drawGrants() {
       </div>`;
   }).join('');
 
-  document.getElementById('grant-list').innerHTML = html || '<p>No grants match your search.</p>';
+  document.getElementById('grant-list').innerHTML = html || '<p>No grants match your search. <a href="#" onclick="clearSearch()">Clear search</a></p>';
 }
 
 async function saveGrant(i) {
@@ -128,4 +128,9 @@ async function loadPastAwards() {
     </div>`).join('');
 
   document.getElementById('past-awards').innerHTML = html || '<p class="small">No past awards found.</p>';
+}
+
+function clearSearch() {
+  document.getElementById('search-box').value = '';
+  filterGrants();
 }
