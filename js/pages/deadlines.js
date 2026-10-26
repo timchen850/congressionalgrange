@@ -17,7 +17,7 @@ function dueLabel(d) {
 
 function drawDeadlines() {
   const html = deadlines.map(d => `
-    <li class="card">
+    <li class="card${!d.done && daysUntil(d.due_date) < 0 ? ' overdue' : ''}">
       <b>${esc(d.title)}</b> - ${d.due_date} (${dueLabel(d)})
       ${d.done ? '' : `<button class="btn-outline" onclick="markDone(${d.id})">Mark done</button>`}
       <button class="btn-outline" onclick="deleteDeadline(${d.id})">Delete</button>

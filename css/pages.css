@@ -135,3 +135,8 @@ footer {
   color: var(--accent);
   font-weight: bold;
 }
+
+.overdue {
+  border-color: #c0392b;
+  background: #fdf0ee;
+}
