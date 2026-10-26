@@ -1,0 +1,30 @@
+name: GrantBench
+
+# Runs by hand, every Monday, and when we change the AI code or the test cases.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 9 * * 1'
+  push:
+    paths:
+      - 'supabase/functions/**'
+      - 'grantbench/**'
+
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run GrantBench
+        env:
+          GRANTBENCH_EMAIL: ${{ secrets.GRANTBENCH_EMAIL }}
+          GRANTBENCH_PASSWORD: ${{ secrets.GRANTBENCH_PASSWORD }}
+        run: |
+          code=0
+          node grantbench/run.mjs || code=$?
+          # 2 means the AI provider was down, that is a warning and not a failed build
+          if [ $code -eq 2 ]; then echo "::warning::GrantBench was inconclusive"; exit 0; fi
+          exit $code

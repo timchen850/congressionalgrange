@@ -63,13 +63,42 @@ create table document_chunks (
   embedding vector(384)
 );
 
-create or replace function match_document_chunks(query_embedding vector(384), match_count int)
+-- finds the user's own chunks that are close to the query
+-- min_similarity throws away chunks that are not really about the same thing
+create or replace function match_document_chunks(query_embedding vector(384), match_count int, min_similarity float default 0.72)
 returns table (id int, content text, similarity float)
 language sql
 as $$
   select id, content, 1 - (embedding <=> query_embedding) as similarity
   from document_chunks
   where user_id = auth.uid()
+    and 1 - (embedding <=> query_embedding) >= min_similarity
+  order by embedding <=> query_embedding
+  limit match_count;
+$$;
+
+-- example proposals we are allowed to learn from (same for every user)
+create table exemplar_chunks (
+  id serial primary key,
+  title text,
+  funder_type text,
+  source_url text,
+  license text,                       -- how we are allowed to use it
+  usage text default 'learn_from',    -- 'learn_from' or 'reference_only'
+  content text,
+  embedding vector(384)
+);
+
+-- reference_only examples are never sent to the AI
+-- 0.82 is higher than the 0.72 above because proposals all sound alike, see generate-proposal
+create or replace function match_exemplar_chunks(query_embedding vector(384), match_count int, min_similarity float default 0.82)
+returns table (id int, title text, content text, similarity float)
+language sql
+as $$
+  select id, title, content, 1 - (embedding <=> query_embedding) as similarity
+  from exemplar_chunks
+  where usage = 'learn_from'
+    and 1 - (embedding <=> query_embedding) >= min_similarity
   order by embedding <=> query_embedding
   limit match_count;
 $$;
@@ -82,6 +111,7 @@ alter table proposals enable row level security;
 alter table deadlines enable row level security;
 alter table proposal_usage enable row level security;
 alter table document_chunks enable row level security;
+alter table exemplar_chunks enable row level security;
 
 create policy "own profile" on profiles for all using (auth.uid() = id);
 create policy "own answers" on onboarding_answers for all using (auth.uid() = user_id);
@@ -90,3 +120,4 @@ create policy "own proposals" on proposals for all using (auth.uid() = user_id);
 create policy "own deadlines" on deadlines for all using (auth.uid() = user_id);
 create policy "own usage" on proposal_usage for all using (auth.uid() = user_id);
 create policy "own chunks" on document_chunks for all using (auth.uid() = user_id);
+create policy "logged in users can read examples" on exemplar_chunks for select using (auth.role() = 'authenticated');

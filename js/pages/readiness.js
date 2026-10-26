@@ -88,6 +88,41 @@ async function checkIRS() {
     </div>`;
 }
 
+async function checkRFP() {
+  const text = document.getElementById('rfp-text').value.trim();
+  const box = document.getElementById('rfp-result');
+
+  if (!text) {
+    box.innerHTML = '<p class="error">Paste the funder\'s text first.</p>';
+    return;
+  }
+
+  box.innerHTML = '<p>Reading... (about 20 seconds)</p>';
+  const data = await callFn('parse-rfp', { rfp_text: text });
+
+  if (!data || !data.verdict) {
+    box.innerHTML = "<p class=\"error\">Couldn't read that right now. Try again in a minute.</p>";
+    return;
+  }
+
+  // save the rubric so the draft scorecard can use it
+  localStorage.setItem('rubric', JSON.stringify(data.rubric));
+
+  const sectionList = data.sections.map(s => `<li>${esc(s.title)}${s.word_limit ? ' (' + s.word_limit + ' words)' : ''}</li>`).join('');
+  const rubricList = data.rubric.criteria.map(c => `<li>${esc(c.name)}${c.weight ? ' - ' + c.weight + ' points' : ''}</li>`).join('');
+
+  box.innerHTML = `
+    <div class="card">
+      <h3>${esc(data.verdict_headline || data.verdict)}</h3>
+      <p>${esc(data.verdict_reason)}</p>
+      <p><b>Deadline:</b> ${esc(data.deadline || 'Not stated')}</p>
+      <h4>Sections they want</h4>
+      <ul>${sectionList || '<li>None listed</li>'}</ul>
+      <h4>How they score it</h4>
+      <ul>${rubricList || '<li>They did not say, so we use a basic rubric.</li>'}</ul>
+    </div>`;
+}
+
 function saveSamDate() {
   localStorage.setItem('samDate', document.getElementById('sam-date').value);
   showSam();

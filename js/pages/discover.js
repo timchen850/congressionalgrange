@@ -21,19 +21,63 @@ async function loadGrants() {
   loadPastAwards();
 }
 
+// used to tell if a grant is only for one state
+const states = {
+  AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California', CO: 'Colorado',
+  CT: 'Connecticut', DE: 'Delaware', FL: 'Florida', GA: 'Georgia', HI: 'Hawaii', ID: 'Idaho',
+  IL: 'Illinois', IN: 'Indiana', IA: 'Iowa', KS: 'Kansas', KY: 'Kentucky', LA: 'Louisiana',
+  ME: 'Maine', MD: 'Maryland', MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota',
+  MS: 'Mississippi', MO: 'Missouri', MT: 'Montana', NE: 'Nebraska', NV: 'Nevada',
+  NH: 'New Hampshire', NJ: 'New Jersey', NM: 'New Mexico', NY: 'New York', NC: 'North Carolina',
+  ND: 'North Dakota', OH: 'Ohio', OK: 'Oklahoma', OR: 'Oregon', PA: 'Pennsylvania',
+  RI: 'Rhode Island', SC: 'South Carolina', SD: 'South Dakota', TN: 'Tennessee', TX: 'Texas',
+  UT: 'Utah', VT: 'Vermont', VA: 'Virginia', WA: 'Washington', WV: 'West Virginia',
+  WI: 'Wisconsin', WY: 'Wyoming'
+};
+
+// "Austin, TX" -> "TX"
+function myState() {
+  const m = (answers.primary_location || '').match(/([A-Za-z]{2})\s*$/);
+  return m ? m[1].toUpperCase() : '';
+}
+
+// if the grant title names a state, return it. Otherwise it is a national grant
+function grantState(title) {
+  const t = title.toLowerCase();
+  return Object.keys(states).find(abbr => t.includes(states[abbr].toLowerCase())) || '';
+}
+
+// No AI here, the same grant and profile always give the same score
 function matchScore(g) {
   let score = 35;
   const text = (g.title + ' ' + (g.description || '')).toLowerCase();
 
+  // focus areas matter the most
   (answers.focus_areas || []).forEach(area => {
     if (text.includes(area.toLowerCase())) score += 14;
   });
 
+  // their programs
+  (answers.primary_programs || '').split(',').forEach(prog => {
+    prog = prog.trim().toLowerCase();
+    if (prog && text.includes(prog)) score += 8;
+  });
+
+  // words from their mission (capped at 12 so it can't take over)
   let bonus = 0;
   (answers.mission || '').toLowerCase().split(/\W+/).forEach(w => {
     if (w.length > 4 && text.includes(w)) bonus += 2;
   });
   score += Math.min(bonus, 12);
+
+  // state grants: big bonus if it's ours, big penalty if it's another state
+  const state = grantState(g.title);
+  if (state) {
+    if (state == myState()) score += 16;
+    else score -= 30;
+  } else {
+    score += 3;
+  }
 
   if (text.includes('501(c)(3)') && answers.entity_type != '501(c)(3) nonprofit') score -= 20;
 

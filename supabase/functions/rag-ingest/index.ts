@@ -1,21 +1,4 @@
-import { cors, json, dbFor, getUser } from '../_shared/helpers.ts';
-
-const model = new Supabase.ai.Session('gte-small');
-
-// split on paragraphs so we don't cut sentences in half
-function chunk(text: string, size = 1000) {
-  const out: string[] = [];
-  let cur = '';
-  for (const para of text.split(/\n\s*\n/)) {
-    if (cur && (cur + para).length > size) {
-      out.push(cur.trim());
-      cur = '';
-    }
-    cur += para + '\n\n';
-  }
-  if (cur.trim()) out.push(cur.trim());
-  return out;
-}
+import { cors, json, dbFor, getUser, chunk, embed } from '../_shared/helpers.ts';
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: cors });
@@ -30,7 +13,7 @@ Deno.serve(async (req) => {
   const pieces = chunk(text);
 
   for (const piece of pieces) {
-    const embedding = await model.run(piece, { mean_pool: true, normalize: true });
+    const embedding = await embed(piece);
     const { error } = await db.from('document_chunks').insert({
       user_id: user.id,
       label,

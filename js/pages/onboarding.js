@@ -15,6 +15,7 @@ const steps = [
       { key: 'mission', label: 'Mission statement', type: 'textarea', required: true },
       { key: 'focus_areas', label: 'Focus areas', type: 'multi',
         options: ['Education', 'Housing', 'Food Security', 'Health', 'Environment', 'Arts', 'Youth', 'Veterans', 'Workforce', 'Community Development'] },
+      { key: 'primary_programs', label: 'Your main programs (separate with commas)', type: 'text' },
       { key: 'beneficiaries', label: 'Who do you serve?', type: 'textarea' }
     ]
   },

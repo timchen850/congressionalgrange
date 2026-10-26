@@ -10,6 +10,12 @@
 </div>
 <div id="irs-result"></div>
 
+<h2>Read a funder's call for proposals</h2>
+<p>Paste the funder's text and we will tell you if you should apply.</p>
+<textarea id="rfp-text" rows="6" placeholder="Paste the call for proposals here"></textarea>
+<button class="btn" onclick="checkRFP()">Read it</button>
+<div id="rfp-result"></div>
+
 <h2>SAM.gov registration</h2>
 <p>Federal grants need an active SAM.gov registration. It has to be renewed every year.</p>
 <label>Expiration date: <input type="date" id="sam-date" onchange="saveSamDate()"></label>

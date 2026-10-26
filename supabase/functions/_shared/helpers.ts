@@ -72,3 +72,35 @@ export async function askAI(prompt: string, model = 'gemini-2.5-flash') {
   }
   return await groq(prompt);
 }
+
+// asks the AI for json and turns the answer into an object
+export async function askJSON(prompt: string) {
+  const text = await askAI(prompt);
+  // the model sometimes puts ``` around the json, so cut it down to the braces
+  const start = text.indexOf('{');
+  const end = text.lastIndexOf('}');
+  if (start == -1 || end == -1) throw new Error('no json in answer');
+  return JSON.parse(text.slice(start, end + 1));
+}
+
+// split on paragraphs so we don't cut sentences in half
+export function chunk(text: string, size = 1000) {
+  const out: string[] = [];
+  let cur = '';
+  for (const para of text.split(/\n\s*\n/)) {
+    if (cur && (cur + para).length > size) {
+      out.push(cur.trim());
+      cur = '';
+    }
+    cur += para + '\n\n';
+  }
+  if (cur.trim()) out.push(cur.trim());
+  return out;
+}
+
+// turns text into 384 numbers so we can search by meaning (gte-small)
+const embedder = new Supabase.ai.Session('gte-small');
+
+export async function embed(text: string) {
+  return await embedder.run(text, { mean_pool: true, normalize: true });
+}
