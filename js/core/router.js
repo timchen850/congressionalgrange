@@ -6,6 +6,7 @@ const loaders = {
   discover: () => { if (allGrants.length == 0) loadGrants(); },
   readiness: () => loadReadiness(),
   deadlines: () => loadDeadlines(),
+  generator: () => loadDrafts(),
   profile: () => loadProfile()
 };
 

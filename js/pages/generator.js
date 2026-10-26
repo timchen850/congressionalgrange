@@ -92,4 +92,25 @@ async function saveDraft() {
     content: draftText()
   });
   toast(error ? "Couldn't save the draft." : 'Draft saved!');
+  if (!error) loadDrafts();
+}
+
+let savedDrafts = [];
+
+async function loadDrafts() {
+  const { data } = await db.from('proposals').select('*').eq('user_id', user.id).order('created_at', { ascending: false });
+  savedDrafts = data || [];
+
+  const html = savedDrafts.map((d, i) => `
+    <li>${esc(d.grant_title || 'Untitled')} - ${d.created_at.slice(0, 10)}
+      <button class="btn-outline" onclick="openDraft(${i})">Open</button>
+    </li>`).join('');
+  document.getElementById('draft-list').innerHTML = html || '<li>No saved drafts yet.</li>';
+}
+
+function openDraft(i) {
+  const d = savedDrafts[i];
+  document.getElementById('gen-grant').value = d.grant_title || '';
+  showDraft(d.content);
+  window.scrollTo(0, document.getElementById('gen-output').offsetTop);
 }
