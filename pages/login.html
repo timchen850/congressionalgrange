@@ -1,7 +1,7 @@
 <div class="form-box">
   <h2 id="login-title">Log in</h2>
   <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
+  <input type="password" id="password" placeholder="Password" onkeydown="if (event.key == 'Enter') handleLogin()">
   <button class="btn" onclick="handleLogin()">Continue</button>
   <button class="btn-outline" onclick="logInWithGoogle()">Continue with Google</button>
   <p class="small">
