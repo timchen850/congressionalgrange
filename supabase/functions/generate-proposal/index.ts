@@ -1,4 +1,4 @@
-import { cors, json, dbFor, getUser, askAI, embed } from '../_shared/helpers.ts';
+import { cors, json, dbFor, adminDb, getUser, askAI, embed } from '../_shared/helpers.ts';
 
 const LIMITS: Record<string, number> = { free: 2, starter: 10, pro: 30 };
 
@@ -56,7 +56,8 @@ Deno.serve(async (req) => {
 
   try {
     const text = await askAI(full);
-    await db.from('proposal_usage').upsert({ user_id: user.id, day: today, count: used + 1 });
+    // users can't write to this table, so we use the admin client
+    await adminDb().from('proposal_usage').upsert({ user_id: user.id, day: today, count: used + 1 });
     return json({ text });
   } catch (e) {
     console.log(e);

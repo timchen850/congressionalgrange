@@ -19,6 +19,11 @@ export function dbFor(req: Request) {
   });
 }
 
+// This one ignores row level security, so only use it for things users must not change themselves
+export function adminDb() {
+  return createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
+}
+
 export async function getUser(req: Request) {
   const { data } = await dbFor(req).auth.getUser();
   return data.user;

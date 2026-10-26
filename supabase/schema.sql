@@ -118,6 +118,16 @@ create policy "own answers" on onboarding_answers for all using (auth.uid() = us
 create policy "own grants" on grants for all using (auth.uid() = user_id);
 create policy "own proposals" on proposals for all using (auth.uid() = user_id);
 create policy "own deadlines" on deadlines for all using (auth.uid() = user_id);
-create policy "own usage" on proposal_usage for all using (auth.uid() = user_id);
+-- users can only READ their draft count. The generate-proposal function adds to it
+-- with the service role key. If they could change it, they could reset their own limit.
+create policy "own usage" on proposal_usage for select using (auth.uid() = user_id);
 create policy "own chunks" on document_chunks for all using (auth.uid() = user_id);
 create policy "logged in users can read examples" on exemplar_chunks for select using (auth.role() = 'authenticated');
+
+-- Users can edit their own profile, but they must NOT be able to change their plan.
+-- Without this, anyone logged in could set plan = 'pro' from the browser.
+-- Only the stripe webhook changes plan and stripe_customer_id (it uses the service role key).
+-- If you already ran this file once, run supabase/fix_plan_security.sql instead.
+revoke insert, update on profiles from anon, authenticated;
+grant insert (id, org_name, org_type, ein) on profiles to authenticated;
+grant update (id, org_name, org_type, ein) on profiles to authenticated;
