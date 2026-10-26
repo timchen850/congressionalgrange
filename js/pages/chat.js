@@ -31,3 +31,9 @@ async function sendChat() {
   chatLog.push({ role: 'assistant', text: reply });
   waiting = false;
 }
+
+function clearChat() {
+  if (waiting) return;
+  chatLog = [];
+  document.getElementById('chat-box').innerHTML = '';
+}
