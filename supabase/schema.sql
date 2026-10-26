@@ -1,6 +1,6 @@
 
 create table profiles (
-  id uuid primary key references auth.users(id),
+  id uuid primary key references auth.users(id) on delete cascade,
   org_name text,
   org_type text,
   ein text,
@@ -11,14 +11,14 @@ create table profiles (
 
 -- survey answers, stored as one json blob
 create table onboarding_answers (
-  user_id uuid primary key references auth.users(id),
+  user_id uuid primary key references auth.users(id) on delete cascade,
   answers jsonb,
   updated_at timestamp default now()
 );
 
 create table grants (
   id serial primary key,
-  user_id uuid references auth.users(id),
+  user_id uuid references auth.users(id) on delete cascade,
   title text,
   funder text,
   amount numeric,
@@ -30,7 +30,7 @@ create table grants (
 
 create table proposals (
   id serial primary key,
-  user_id uuid references auth.users(id),
+  user_id uuid references auth.users(id) on delete cascade,
   grant_title text,
   content text,
   created_at timestamp default now()
@@ -38,7 +38,7 @@ create table proposals (
 
 create table deadlines (
   id serial primary key,
-  user_id uuid references auth.users(id),
+  user_id uuid references auth.users(id) on delete cascade,
   title text,
   due_date date,
   done boolean default false
@@ -46,7 +46,7 @@ create table deadlines (
 
 -- daily draft limit
 create table proposal_usage (
-  user_id uuid references auth.users(id),
+  user_id uuid references auth.users(id) on delete cascade,
   day date default current_date,
   count int default 0,
   primary key (user_id, day)
@@ -57,7 +57,7 @@ create extension if not exists vector;
 
 create table document_chunks (
   id serial primary key,
-  user_id uuid references auth.users(id),
+  user_id uuid references auth.users(id) on delete cascade,
   label text,
   content text,
   embedding vector(384)
