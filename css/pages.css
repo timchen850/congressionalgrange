@@ -130,3 +130,8 @@ footer {
     font-size: 28px;
   }
 }
+
+.nav-links button.active {
+  color: var(--accent);
+  font-weight: bold;
+}

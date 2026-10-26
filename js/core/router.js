@@ -34,5 +34,9 @@ function showScreen(name) {
   document.getElementById(name).classList.remove('hidden');
   window.scrollTo(0, 0);
 
+  document.querySelectorAll('.nav-links button').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('onclick') == "showScreen('" + name + "')");
+  });
+
   if (loaders[name]) loaders[name]();
 }
