@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
   if (!res.ok) return json({ results: [] });
 
   const data = await res.json();
-  const results = data.results.map((r: Record<string, unknown>) => ({
+  const results = (data.results ?? []).map((r: Record<string, unknown>) => ({
     recipient: r['Recipient Name'],
     amount: r['Award Amount'],
     agency: r['Awarding Agency'],
