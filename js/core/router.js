@@ -12,7 +12,13 @@ const loaders = {
 // each screen's html lives in pages/, pull them all in once at startup
 async function loadPages() {
   const app = document.getElementById('app');
-  const htmls = await Promise.all(screens.map(s => fetch('pages/' + s + '.html').then(r => r.text())));
+  let htmls;
+  try {
+    htmls = await Promise.all(screens.map(s => fetch('pages/' + s + '.html').then(r => r.text())));
+  } catch (e) {
+    app.innerHTML = '<p class="error">Could not load the pages. Open the site through a web server, not as a file.</p>';
+    throw e;
+  }
 
   screens.forEach((s, i) => {
     const section = document.createElement('section');
