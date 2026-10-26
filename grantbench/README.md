@@ -3,7 +3,7 @@
 GrantBench is how we test the AI parts of Grange. It runs 37 cases where we already
 know the right answer and checks the AI against them. If a gate is missed, the build fails.
 
-It tests three functions: `parse-rfp` (reads the funder's call for proposals) and
+It tests two functions: `parse-rfp` (reads the funder's call for proposals) and
 `judge-proposal` (scores a draft against the rubric).
 
 | Kind of case | What it checks | Gate |
