@@ -1,12 +1,12 @@
 const checklist = [
-  { id: 'ein', text: 'EIN (tax ID number)' },
+  { id: 'ein', text: 'EIN (tax ID number)', link: 'https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online' },
   { id: 'irs_letter', text: 'IRS 501(c)(3) letter' },
   { id: 'budget', text: 'Current year budget' },
   { id: 'financials', text: "Last year's financial statements" },
   { id: 'board', text: 'List of board members' },
   { id: 'form990', text: 'Most recent Form 990' },
-  { id: 'sam', text: 'Active SAM.gov registration' },
-  { id: 'uei', text: 'UEI number' }
+  { id: 'sam', text: 'Active SAM.gov registration', link: 'https://sam.gov/content/entity-registration' },
+  { id: 'uei', text: 'UEI number', link: 'https://sam.gov/content/duns-uei' }
 ];
 
 let checked = {};
@@ -24,7 +24,7 @@ function loadReadiness() {
   document.getElementById('checklist').innerHTML = checklist.map(c => `
     <li><label class="option">
       <input type="checkbox" ${checked[c.id] ? 'checked' : ''} onchange="toggleItem('${c.id}')">${c.text}
-    </label></li>`).join('');
+    </label>${c.link ? ` <a class="small" href="${c.link}" target="_blank">how to get it</a>` : ''}</li>`).join('');
 
   if (answers.ein) document.getElementById('ein-input').value = answers.ein;
 
