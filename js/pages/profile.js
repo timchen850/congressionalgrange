@@ -9,8 +9,12 @@ const labels = {
   staff_count: 'Staff'
 };
 
-function loadProfile() {
+async function loadProfile() {
+  const { data } = await db.from('profiles').select('plan').eq('id', user.id).maybeSingle();
+  const plan = data && data.plan ? data.plan : 'free';
+
   let html = '<div class="card">';
+  html += '<p><b>Plan:</b> ' + plan.charAt(0).toUpperCase() + plan.slice(1) + '</p>';
   for (const key in labels) {
     let v = answers[key];
     if (Array.isArray(v)) v = v.join(', ');
