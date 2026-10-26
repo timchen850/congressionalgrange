@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grange AI - Find and write grants</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+  <nav id="navbar" class="hidden">
+    <div class="logo">
+      <img src="assets/logo.png" alt="logo">
+      <span>Grange AI</span>
+    </div>
+    <div class="nav-links">
+      <button onclick="showScreen('dashboard')">Dashboard</button>
+      <button onclick="showScreen('discover')">Find Grants</button>
+      <button onclick="showScreen('readiness')">Readiness</button>
+      <button onclick="showScreen('generator')">Write Proposal</button>
+      <button onclick="showScreen('deadlines')">Deadlines</button>
+      <button onclick="showScreen('chat')">Assistant</button>
+      <button onclick="showScreen('profile')">Profile</button>
+      <button onclick="logOut()">Log out</button>
+    </div>
+  </nav>
+
+  <main id="app"></main>
+  <div id="toast" class="hidden"></div>
+
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
+  <script src="js/core/db.js"></script>
+  <script src="js/core/utils.js"></script>
+  <script src="js/core/router.js"></script>
+  <script src="js/pages/auth.js"></script>
+  <script src="js/pages/onboarding.js"></script>
+  <script src="js/pages/dashboard.js"></script>
+  <script src="js/pages/discover.js"></script>
+  <script src="js/pages/readiness.js"></script>
+  <script src="js/pages/generator.js"></script>
+  <script src="js/pages/deadlines.js"></script>
+  <script src="js/pages/chat.js"></script>
+  <script src="js/pages/profile.js"></script>
+  <script src="js/pages/pricing.js"></script>
+  <script src="js/core/start.js"></script>
+</body>
+</html>

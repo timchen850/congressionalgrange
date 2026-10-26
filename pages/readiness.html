@@ -1,0 +1,17 @@
+<h1>Are you ready to apply?</h1>
+<div class="progress"><div id="ready-fill"></div></div>
+<p id="ready-score"></p>
+<ul id="checklist" class="checklist"></ul>
+
+<h2>Check your IRS status</h2>
+<div class="row">
+  <input type="text" id="ein-input" placeholder="EIN, like 47-1234567">
+  <button class="btn" onclick="checkIRS()">Check</button>
+</div>
+<div id="irs-result"></div>
+
+<h2>SAM.gov registration</h2>
+<p>Federal grants need an active SAM.gov registration. It has to be renewed every year.</p>
+<label>Expiration date: <input type="date" id="sam-date" onchange="saveSamDate()"></label>
+<p id="sam-status"></p>
+<a href="https://sam.gov" target="_blank">Go to SAM.gov</a>

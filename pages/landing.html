@@ -1,0 +1,52 @@
+<div class="hero">
+  <img src="assets/logo.png" alt="Grange AI logo" class="hero-logo">
+  <h1>The grants you need, written for you.</h1>
+  <p>Grange AI finds grants your organization qualifies for, checks if you are ready to apply,
+     and helps you write the proposal.</p>
+  <button class="btn" onclick="showScreen('login')">Get started</button>
+</div>
+
+<div class="features">
+  <div class="card">
+    <h3>1. Build your profile</h3>
+    <p>Answer a short survey about your organization.</p>
+  </div>
+  <div class="card">
+    <h3>2. Find grants</h3>
+    <p>We search Grants.gov and score each grant on how well it fits you.</p>
+  </div>
+  <div class="card">
+    <h3>3. Get ready</h3>
+    <p>A checklist of documents and registrations funders ask for.</p>
+  </div>
+  <div class="card">
+    <h3>4. Write the proposal</h3>
+    <p>Get a full first draft based on your profile.</p>
+  </div>
+</div>
+
+<div id="pricing" class="pricing">
+  <h2>Pricing</h2>
+  <div class="toggle">
+    <button id="monthly-btn" class="on" onclick="setBilling('monthly')">Monthly</button>
+    <button id="yearly-btn" onclick="setBilling('yearly')">Yearly</button>
+  </div>
+  <div class="features">
+    <div class="card">
+      <h3>Starter</h3>
+      <p class="price" id="starter-price">$14.99 / month</p>
+      <p>For small groups applying to a few grants.</p>
+      <button class="btn" onclick="buyPlan('starter')">Choose Starter</button>
+    </div>
+    <div class="card">
+      <h3>Pro</h3>
+      <p class="price" id="pro-price">$35.99 / month</p>
+      <p>For organizations applying all year.</p>
+      <button class="btn" onclick="buyPlan('pro')">Choose Pro</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2026 Grange AI</p>
+</footer>

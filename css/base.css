@@ -1,0 +1,23 @@
+:root {
+  --bg: #f5f4f1;
+  --text: #1c1b19;
+  --gray: #6b6862;
+  --accent: #e85c3a;
+  --card: #ffffff;
+  --border: #e2dfd8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.hidden {
+  display: none !important;
+}

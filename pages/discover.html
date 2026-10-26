@@ -1,0 +1,15 @@
+<h1>Find Grants</h1>
+<div class="row">
+  <input type="text" id="search-box" placeholder="Search by keyword" oninput="filterGrants()">
+  <select id="sort-select" onchange="filterGrants()">
+    <option value="score">Best match</option>
+    <option value="deadline">Deadline</option>
+  </select>
+  <button class="btn" onclick="loadGrants()">Refresh</button>
+</div>
+<p id="grant-status" class="small"></p>
+<div id="grant-list"></div>
+
+<h2>Past awards to groups like you</h2>
+<p class="small">From USASpending.gov</p>
+<div id="past-awards"></div>

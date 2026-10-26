@@ -1,0 +1,23 @@
+<h1>Write a Proposal</h1>
+<label>Grant name</label>
+<input type="text" id="gen-grant" placeholder="Name of the grant">
+<label>Funder</label>
+<input type="text" id="gen-funder" placeholder="Who is giving the money">
+<label>Amount you are asking for</label>
+<input type="text" id="gen-amount" placeholder="$50,000">
+<label>What is the project?</label>
+<textarea id="gen-project" rows="4" placeholder="Describe the project in a few sentences"></textarea>
+<label>Paste the funder's instructions (optional)</label>
+<textarea id="gen-rfp" rows="4"></textarea>
+<button class="btn" id="gen-btn" onclick="generateProposal()">Write my draft</button>
+
+<div id="gen-output" class="hidden">
+  <h2>Your draft</h2>
+  <p class="small">Anything marked [VERIFY] needs you to double check it.</p>
+  <div id="draft" contenteditable="true"></div>
+  <div class="row">
+    <button class="btn-outline" onclick="copyDraft()">Copy</button>
+    <button class="btn-outline" onclick="downloadDraft()">Download .txt</button>
+    <button class="btn-outline" onclick="saveDraft()">Save</button>
+  </div>
+</div>
